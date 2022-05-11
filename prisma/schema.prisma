@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Tasks {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String   @db.VarChar(255)
+  content   String?
+  status    Boolean  @default(false)
+  users     Users    @relation(fields: [fk_user], references: [id])
+  fk_user   Int
+}
+
+model Users {
+  id    Int     @id @default(autoincrement())
+  name  String?
+  tasks Tasks[]
+}
